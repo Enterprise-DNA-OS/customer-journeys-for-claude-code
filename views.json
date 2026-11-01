@@ -5,7 +5,16 @@
     "sections": [
       {
         "title": "Journeys",
-        "sql": "select * from journey_health order by code"
+        "sql": "select * from journey_health order by code",
+        "columns": [
+          "code",
+          "name",
+          "owner",
+          "review_due",
+          "steps",
+          "evidence_gaps",
+          "overdue_actions"
+        ]
       },
       {
         "title": "Needs attention",
