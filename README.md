@@ -1,115 +1,97 @@
-<h1 align="center">Customer Journeys for Claude Code</h1>
+# Customer Journeys for Claude Code
 
-<p align="center">
-  <strong>The open-source customer journey system that is just a database and Claude Code.</strong>
-</p>
+Your customer steps, supporting evidence and improvement decisions in a database you own. Find the promises that have no proof and the actions that have no owner.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free, MIT. Install and run the demo. | Your journey fields, export mapping and review rules. | Installed and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your UXPressia data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=uxpressia">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/uxpressia?utm_source=github&utm_medium=readme&utm_campaign=uxpressia">How it works</a></td>
-  </tr>
-</table>
+[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=uxpressia) · [Instead of UXPressia](https://enterprisedna.co/omni/instead-of/uxpressia)
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-uxpressia">Instead of UXPressia</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## Start with the Monday review
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Customer Journeys for Claude Code does the job you pay UXPressia for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the UXPressia dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays UXPressia per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=uxpressia).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later.
 
 ```bash
-git clone https://github.com/Enterprise-DNA-OS/customer-journeys-for-claude-code.git
-cd customer-journeys-for-claude-code
 npm install
 npm run demo
+npm run journeys -- weekly-review
+npm run docs
+npm run view
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Open the folder in Claude Code, Codex, OpenCode or Cursor. Every runtime reads the same commands. PGlite runs locally without a server. DATABASE_URL selects PostgreSQL. The scripts use an owner/operator connection, not a public web role. DATA_DIR selects a different local store. Never seed a shared working database. PostgreSQL seeding requires --demo-database.
 
-### Use it with your own Postgres or Supabase
+The fictional demo has two journeys: account onboarding and annual renewal. It includes an outdated interview finding, an unassigned action, overdue reviews and two measurements of dispatch clarity. Dates are relative to today. Seeding twice preserves existing records.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## The weekly rituals
 
-## The commands
+Monday: /weekly-review joins journey health, attention, priorities, owner workload and measured outcomes. Before deciding what to improve: /evidence-gaps and /priorities. In the review: /decide records the operator's decision. After a change: /log-metric and /close-opportunity record observations and completion. /draft-review and /draft-brief prepare private documents.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+27 CLI commands and 31 operational slash-command recipes. Every CLI command accepts --json. Mutations require --actor and support --dry-run. Exact codes, case-insensitive names and partial UUIDs resolve records. Ambiguous matches list candidates and exit 1. [Command recipes](.claude/commands/).
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Evidence follows the step it describes
 
-## Instead of UXPressia
+Changing step content increments its revision and clears its journey review. Earlier evidence becomes stale. Extending an evidence review date does not update its original step revision. New evidence is required for a revised step. Approval needs current evidence; closure needs current evidence plus measurements on two dates for the same metric and unit. A closed action is not a claim that an improvement caused the result.
 
-<!-- TODO(author): how to bring data across from UXPressia; link docs/replace-uxpressia.md -->
+Impact and effort are owner-entered scores from one to five. Priority is impact divided by effort, shown beside the evidence count. It is not a forecast. Actor, before and after values, and decision notes remain in the audit history. Database administrators can alter records; this is not a tamper-proof audit service.
 
-## Architecture
+## Ten questions you can ask today
 
+These are tested questions tailored to the owned system, not claims that UXPressia cannot answer them.
+
+1. Which steps have no current evidence? Run `evidence-gaps`.
+2. Which findings refer to an earlier step revision? Run `evidence`.
+3. What needs a decision before the next review? Run `priorities`.
+4. Which high-impact improvements have no current evidence? Run `opportunities`.
+5. Who owns the overdue actions? Run `attention`.
+6. Who has the largest unassigned or overdue workload? Run `owner-load`.
+7. Did the recorded measure change after an improvement? Run `outcomes`.
+8. Which personal findings need a retention review? Run `compliance`.
+9. What did the record say before an operator changed it? Run `activity`.
+10. Which journeys combine overdue actions with evidence gaps? Run `journeys`.
+
+## Bring your history
+
+```bash
+npm run journeys -- import uxpressia --file=fixtures/uxpressia.csv --source=demo-import --journey=IMPORTED --actor="Your name" --dry-run
 ```
-customer-journeys-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
 
-## Built for coding agents
+Use your export in place of the fixture and repeat without --dry-run when the counts agree. The importer supports the row layout in the vendor's downloadable CSV example and configurable column mapping. Every original column is retained. It does not reconstruct a visual canvas, images, comments or approval history. [Export, mapping and reconciliation](docs/replace-uxpressia.md).
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Documents and views
 
-## Contributing
+Edit brand.json once. npm run docs renders journey briefs and improvement decision records, with evidence and measurements. npm run view produces the weekly review, priority queue and ordered journey map. These are read-only HTML snapshots, printable to PDF. They contain no editing controls. [What a screen adds](docs/why-no-front-end.md).
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+/compliance flags missing purposes and overdue retention reviews for personal evidence, with NZ and AU source links. Review dates are business policy, not statutory retention periods. It neither deletes data nor certifies compliance. [Rules and applicability](docs/compliance.md).
 
-## Want it installed and run for you?
+## Your first hour: ten things to ask for
 
-Enterprise DNA installs Customer Journeys for Claude Code for your business, migrates your UXPressia data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+1. Put our name and logo on the journey brief.
+2. Import one export without saving it.
+3. Map our phase and pain-point columns.
+4. Add our service owner to each journey.
+5. Record the source behind a pain point.
+6. Show which findings are out of date.
+7. Add our impact scoring guidance.
+8. Compare the same measure before and after a change.
+9. Add a channel breakdown to Monday's view.
+10. Prepare a review brief without sending it.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=uxpressia)
-- Read more: [enterprisedna.co/omni/instead-of/uxpressia](https://enterprisedna.co/omni/instead-of/uxpressia?utm_source=github&utm_medium=readme&utm_campaign=uxpressia)
+/customise writes a tested migration for a requested field or rule. /new-view adds a read-only report. All original export columns remain available for additional mappings.
 
-## License
+## Verification and operation
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+npm test creates a temporary database, migrates and seeds twice, exercises all CLI commands, and verifies revision-sensitive evidence, decision gates, metric units, import rollback, idempotency, mapping, original columns, exports, ambiguity, real CLI output and escaped HTML. CI runs Node 20 and 22 on Windows and Linux, plus PostgreSQL 17. Check the actual CI results before treating a platform as passed.
+
+Use a disposable empty database for TEST_DATABASE_URL. For shared production use, configure operator access, network controls, TLS, backups, recovery checks and retention procedures. Local files and exports stay private and ignored by Git. Export includes every business table and the full audit history; it is a portable snapshot, not an implemented restore command. Back up the database separately and test recovery.
+
+## Price context
+
+UXPressia Business lists US$95 per user per month. A 25-user monthly-billing scenario is US$28,500 a year before tax. This is a rate calculation, not a verified NZ/AU customer invoice. Annual billing and discounts can reduce it. [Vendor pricing](https://uxpressia.com/pricing), checked 1 November 2026. [Selection and limitations](docs/research.md).
+
+## Built and run for you
+
+Enterprise DNA maps the agreed UXPressia exports, checks the result and builds your fields, rules and documents. A shared web view, integrations or another stack can be part of your custom version. Omni by Enterprise DNA runs it for one setup fee, then a retainer. [Book 30 minutes with Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=uxpressia).
+
+MIT. Not affiliated with UXPressia or Anthropic. Hosting and agent usage have their own costs.

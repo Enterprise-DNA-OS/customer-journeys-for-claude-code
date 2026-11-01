@@ -1,11 +1,40 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "journey-brief",
+    "title": "Journey brief",
+    "for_each": "select id,code from journeys",
+    "file": "code",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Purpose and owner",
+        "layout": "record",
+        "sql": "select code,name,owner,persona,goal,review_due from journeys where id=$1"
+      },
+      {
+        "title": "Customer steps",
+        "sql": "select position,name,channel,customer_action,pain from steps where journey_id=$1 order by position"
+      },
+      {
+        "title": "Evidence",
+        "sql": "select e.code,e.summary,e.source,e.current from evidence_health e join steps s on s.id=e.step_id where s.journey_id=$1 order by e.code"
+      }
+    ]
+  },
+  {
+    "name": "improvement-decision",
+    "title": "Improvement decision record",
+    "for_each": "select id,code from opportunities",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Decision",
+        "layout": "record",
+        "sql": "select code,name,state,owner,decision_note,decided_by,outcome_note from opportunities where id=$1"
+      },
+      {
+        "title": "Measurements",
+        "sql": "select name,value,unit,observed_on,source from metrics where opportunity_id=$1 order by observed_on,id"
+      }
     ]
   }
 ]

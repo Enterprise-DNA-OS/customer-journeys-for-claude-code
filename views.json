@@ -1,13 +1,35 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Customer Journeys for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Customer journey review",
     "sections": [
       {
+        "title": "Journeys",
+        "sql": "select * from journey_health order by code"
+      },
+      {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "sql": "select * from attention_queue order by kind,reference"
+      }
+    ]
+  },
+  {
+    "name": "priorities",
+    "title": "Improvement priorities",
+    "sections": [
+      {
+        "title": "Decide next",
+        "sql": "select code,name,owner,priority_score,current_evidence from priority_queue where state in ('proposed','approved') order by priority_score desc,code"
+      }
+    ]
+  },
+  {
+    "name": "journey-map",
+    "title": "Customer journey map",
+    "sections": [
+      {
+        "title": "Steps in order",
+        "sql": "select j.code as journey,s.position,s.name,s.channel,s.customer_action,s.pain,s.owner from steps s join journeys j on j.id=s.journey_id order by j.code,s.position,s.id"
       }
     ]
   }
