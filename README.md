@@ -6,7 +6,7 @@ Your customer steps, supporting evidence and improvement decisions in a database
 |---|---|---|
 | Free, MIT. Install and run the demo. | Your journey fields, export mapping and review rules. | Installed and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=uxpressia) · [Instead of UXPressia](https://enterprisedna.co/omni/instead-of/uxpressia)
+[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=uxpressia) · [Instead of UXPressia](https://enterprisedna.co/omni/instead-of/uxpressia?utm_source=github&utm_medium=readme&utm_campaign=uxpressia)
 
 ## Start with the Monday review
 
